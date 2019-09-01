@@ -1,0 +1,25 @@
+ohrmCloud:
+  - ip: 161.47.68.144
+    name:  Artemis
+  - ip: 198.101.131.176
+    name:  Cyclops
+  - ip: 198.101.131.181
+    name:  Perseus
+  - ip: 134.213.188.9
+    name:  Hope
+  - ip: 134.213.188.8
+    name:  Wolverine
+  - ip: 159.135.137.184
+    name:  Gambit
+  - ip: 161.47.68.145
+    name:  Rogue
+  - ip: 78.136.60.52
+    name:  Xavier
+  - ip: 198.101.131.180
+    name:  Beast
+  - ip: 78.136.60.53
+    name:  Magneto
+  - ip: 198.101.131.179
+    name:  Hermes
+  - ip: 78.136.60.54
+    name:  Jean

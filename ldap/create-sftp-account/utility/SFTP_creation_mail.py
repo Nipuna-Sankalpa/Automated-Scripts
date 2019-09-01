@@ -1,6 +1,7 @@
-import smtplib, ssl
-from email.mime.text import MIMEText
+import smtplib
+import ssl
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_password, sftp_hostname,
@@ -45,5 +46,5 @@ def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_p
         )
 
 
-send_email("nipuna499@gmail.com", "", "nipuna@orangehrmlive.com", "nipuna", "nipuna1234", "lcoalhost",
+send_email("nipuna499@gmail.com", "$9$^1Ldit4WTc$", "nipuna@orangehrmlive.com", "nipuna", "nipuna1234", "lcoalhost",
            "2112")
