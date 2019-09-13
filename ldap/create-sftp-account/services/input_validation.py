@@ -52,4 +52,9 @@ def load_registered_server_list():
     return yaml_input['ohrmCloud']
 
 
-print(input_validation('serverIP', 'wolvesrine.orangzxcehrm.com'))
+def get_server_name(ip):
+    server_list = load_registered_server_list()
+    for server_object in server_list:
+        if ip and ip == server_list['ip']:
+            return server_list['name']
+    return False
