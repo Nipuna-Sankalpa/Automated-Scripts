@@ -46,5 +46,5 @@ def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_p
         )
 
 
-send_email("nipuna499@gmail.com", "$9$^1Ldit4WTc$", "nipuna@orangehrmlive.com", "nipuna", "nipuna1234", "lcoalhost",
+send_email("nipuna499@gmail.com", "XXXX", "nipuna@orangehrmlive.com", "nipuna", "nipuna1234", "lcoalhost",
            "2112")
