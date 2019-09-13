@@ -1,0 +1,23 @@
+script_configurations:
+  - remote_user: nipuna
+    remote_password:  '$2Tl6L4EAk$#'
+
+input_parameters:
+  - key: username
+    help_text: 'Enter SFTP user name without spaces'
+    display_name: 'Client SFTP user name'
+  - key: clientType
+    help_text: 'Select one of the followings, onsite or cloud'
+    display_name: 'Client Type'
+  - key: accountType
+    help_text: 'Select one of the followings, temporary or permenant'
+    display_name: 'SFTP Account Type'
+  - key: validityPeriod
+    help_text: 'Account validity period if the account type is temporary'
+    display_name: 'Account validity Period'
+  - key: serverIP
+    help_text: 'IP of the server which SFTP account needs to be created'
+    display_name: 'Server IP or Domain Name'
+  - key: requesterEmailAddress
+    help_text: 'Email address of the person who request the SFTP account [this person will receive the account details]'
+    display_name: 'Requester Email Address'

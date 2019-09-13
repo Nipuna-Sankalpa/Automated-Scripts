@@ -1,0 +1,7 @@
+#sftpAccounts:
+#  - username: abc
+#    clientType: cloud #onsite or cloud
+#    accountType: temporary #temporary or permenant
+#    validityPeriod: 30 #account validity period if the account type is temporary
+#    serverIP: ftp.orangehrm.com #IP/Domain of the server which SFTP account needs to be created
+#    requestorEmailAddress: XXXXXXXX #email address of the person who request the SFTP account [this person will receive the account details]
