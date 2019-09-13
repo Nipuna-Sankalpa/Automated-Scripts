@@ -111,8 +111,8 @@ def authorize_sftp_account(user_name, server_ip, ldap_connection):
     user_name = bytes(user_name, 'utf-8')
     ldap_connection.modify_s(dn, [(0, 'memberUid', user_name)])
 
-# l = ldap.initialize("ldaps://dev-ldap.orangehrm.com:636/")
-# l.simple_bind_s("cn=admin,dc=orangehrm,dc=com", "pL32Fk7UxU2o")
+# l = ldap.initialize("ldaps://XXXXXXX:636/")
+# l.simple_bind_s("cn=admin,dc=orangehrm,dc=com", "XXXXXX")
 # # password = generate_password()['ldap_password']
 # result = get_new_uid_number(l)
 # # print(result[0][1]['uidNumber'][0].decode('utf-8'))
