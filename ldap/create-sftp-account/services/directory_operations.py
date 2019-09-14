@@ -56,3 +56,9 @@ def update_expire_dates_file(user_account_object):
     yaml_input['sftpAccounts'].append(user_account_object)
     with open(file_path, 'w') as outfile:
         yaml.dump(yaml_input, outfile, default_flow_style=False)
+
+
+def clean_input_file():
+    input_cleanup_file_path = os.path.dirname(__file__) + '/../auto-generated-files/temporary_input_file.yml'
+    input_file_path = os.path.dirname(__file__) + '/../input.yml'
+    os.system('cat ' + input_cleanup_file_path + ' > ' + input_file_path)

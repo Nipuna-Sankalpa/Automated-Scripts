@@ -4,6 +4,7 @@ from datetime import datetime
 from services.directory_operations import *
 from services.input_validation import *
 from services.ldap_operations import *
+from services.update_log import update_sftp_creation_log
 from utility.SFTP_creation_mail import *
 from utility.configurations import *
 
@@ -134,18 +135,8 @@ def main():
             print("LDAP Account Creation FAIL")
 
     ldap_connection.unbind_s()
-    # clean input file
-    input_cleanup_file_path = os.path.dirname(__file__) + '/auto-generated-files/temporary_input_file.yml'
-    input_file_path = os.path.dirname(__file__) + '/input.yml'
-    os.system('cat ' + input_cleanup_file_path + ' > ' + input_file_path)
-
-    # update log file
-    timestamp = str(datetime.now())
-    created_by = str(os.getlogin())
-    log_record = timestamp + ' ' + input_object['username'] + ' ' + input_object['serverIP'] + ' ' + created_by + ' ' + \
-                 input_object['requesterEmailAddress']
-    log_file_name = os.path.dirname(__file__) + '/logs/create-sftp.log'
-    os.system('echo "' + log_record + '" >> ' + log_file_name)
+    clean_input_file()
+    update_sftp_creation_log(input_object)
     return True
 
 
