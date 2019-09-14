@@ -17,8 +17,7 @@ def get_input():
     input_object = {}
     input_object_list = []
     input_key_list = get_predefined_input_parameters()
-
-    yaml_input = yaml.load(open("input.yml"), yaml.SafeLoader)
+    yaml_input = get_input_file()
 
     # if inout file totally invalid
     if yaml_input == None:

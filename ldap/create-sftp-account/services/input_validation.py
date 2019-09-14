@@ -63,3 +63,8 @@ def get_server_name(ip):
         if ip and ip == server_object['ip']:
             return server_object['name']
     return False
+
+
+def get_input_file():
+    yaml_input = yaml.load(open(os.path.dirname(__file__) + "/../input.yml"), yaml.SafeLoader)
+    return yaml_input
