@@ -393,7 +393,9 @@ def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
     email_settings_object = get_email_settings()
     # Create secure# e connection with server and send email
     context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(email_settings_object['host'], email_settings_object['port'], context=context) as server:
+
+    with smtplib.SMTP(email_settings_object['host'], email_settings_object['port']) as server:
+        server.starttls(context=context)  # Secure the connection
         server.login(email_settings_object['user_name'], email_settings_object['password'])
         server.sendmail(
             "ldap-admin@orangehrm.com", receiver_email, message.as_string()
