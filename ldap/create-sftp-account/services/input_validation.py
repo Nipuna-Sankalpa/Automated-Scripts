@@ -52,7 +52,8 @@ def resolve_domain_name(domain_name):
 
 
 def load_registered_server_list():
-    yaml_input = yaml.load(open(os.path.dirname(__file__) + "/../auto-generated-files/server_name_mapping.yml"))
+    yaml_input = yaml.load(open(os.path.dirname(__file__) + "/../auto-generated-files/server_name_mapping.yml"),
+                           yaml.SafeLoader)
     return yaml_input['ohrmCloud']
 
 

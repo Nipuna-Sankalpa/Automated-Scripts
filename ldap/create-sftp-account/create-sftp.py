@@ -1,7 +1,4 @@
-import os
 from datetime import datetime
-
-import yaml
 
 from services.directory_operations import *
 from services.input_validation import *
@@ -19,7 +16,7 @@ def get_input():
     input_object_list = []
     input_key_list = get_predefined_input_parameters()
 
-    yaml_input = yaml.load(open("input.yml"))
+    yaml_input = yaml.load(open("input.yml"), yaml.SafeLoader)
 
     # if inout file totally invalid
     if yaml_input == None:
@@ -76,7 +73,7 @@ def get_input():
 def update_expire_dates_file(user_account_object):
     file_path = os.path.dirname(__file__) + "/auto-generated-files/expiary_dates_auto_generated_do_not_change.yml"
     with open(file_path) as readfile:
-        yaml_input = yaml.load(readfile)
+        yaml_input = yaml.load(readfile, yaml.SafeLoader)
     if yaml_input == None:
         yaml_input = {}
         yaml_input['sftpAccounts'] = []

@@ -104,7 +104,8 @@ def ldap_delete_user(ldap_connection, rdn):
 
 # add sftp user into respective authorize user group
 def authorize_sftp_account(user_name, server_ip, ldap_connection):
-    yaml_input = yaml.load(open(os.path.dirname(__file__) + "/../auto-generated-files/server_name_mapping.yml"))
+    yaml_input = yaml.load(open(os.path.dirname(__file__) + "/../auto-generated-files/server_name_mapping.yml"),
+                           yaml.SafeLoader)
     server_ip_mapping = yaml_input['ohrmCloud']
     server_nick_name = ""
     for x in server_ip_mapping:
