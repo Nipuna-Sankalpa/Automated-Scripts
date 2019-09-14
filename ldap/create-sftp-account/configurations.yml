@@ -13,7 +13,7 @@ input_parameters:
     help_text: 'Select one of the followings, temporary or permenant'
     display_name: 'SFTP Account Type'
   - key: validityPeriod
-    help_text: 'Account validity period if the account type is temporary'
+    help_text: 'Please specify account validity period if the account type is temporary'
     display_name: 'Account validity Period'
   - key: serverIP
     help_text: 'IP of the server which SFTP account needs to be created'
