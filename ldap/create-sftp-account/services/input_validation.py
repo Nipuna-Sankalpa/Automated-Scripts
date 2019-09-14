@@ -16,6 +16,10 @@ def input_validation(input_key, input_value):
         if input_value == "temporary" or input_value == "permenant":
             return True
         return False
+    elif input_key == "username":
+        if input_key is not '' and input_key is not None:
+            return True
+        return False
     elif input_key == "requesterEmailAddress":
         if re.search(email_regex, input_value) and validate_email(input_value, check_mx=True, verify=True):
             return True

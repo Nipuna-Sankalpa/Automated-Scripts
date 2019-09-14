@@ -27,10 +27,9 @@ def get_new_uid_number(ldap_connection):
     ldap_base = "ou=clients,ou=users,dc=orangehrm,dc=com"
     uid_number_list = []
     output = ldap_connection.search_s(ldap_base, ldap.SCOPE_SUBTREE, query, ['uidNumber'])
-    if not len(output) >= 0:
+    if not len(output) > 0:
         return False
-
-    for i in output:
+    for i in range(len(output)):
         uid_number = output[i][1]['uidNumber'][0].decode('utf-8')
         uid_number_list.append(uid_number)
 
@@ -60,12 +59,23 @@ def ldap_add_user(ldap_connection, user_name, client_name, uid_number, server_na
     dn = dn.replace("{{account_type}}", account_type)
     home_directory = "/ftp/" + user_name
 
+    # verify duplications
+    query = "(uid=" + user_name + ")"
+    output = ldap_connection.search_s("ou=users,dc=orangehrm,dc=com", ldap.SCOPE_SUBTREE, query, ['uid'])
+
     user_name = bytes(user_name, 'utf-8')
     client_name = bytes(client_name, 'utf-8')
     uid_number = bytes(uid_number, 'utf-8')
     server_name = bytes(server_name, 'utf-8')
     home_directory = bytes(home_directory, 'utf-8')
     user_password = bytes(user_password, 'utf-8')
+
+    # verify the existence of the user account
+    if len(output) > 0:
+        for i in range(len(output)):
+            temp_dn = output[i][0]
+            if temp_dn == dn:
+                return "duplications"
 
     mod_list = {
         "objectClass": [b"top", b"posixAccount", b"inetOrgPerson", b"organizationalPerson", b"person",
@@ -92,12 +102,6 @@ def ldap_delete_user(ldap_connection, rdn):
     return result
 
 
-def search_ldap_user(ldap_connection, uid, ldap_base):
-    query = "(uid=" + uid + ")"
-    result = ldap_connection.search_s(ldap_base, ldap.SCOPE_BASE, query)
-    return result
-
-
 # add sftp user into respective authorize user group
 def authorize_sftp_account(user_name, server_ip, ldap_connection):
     yaml_input = yaml.load(open(os.path.dirname(__file__) + "/../auto-generated-files/server_name_mapping.yml"))
@@ -112,6 +116,19 @@ def authorize_sftp_account(user_name, server_ip, ldap_connection):
 
     dn = "cn=authorized,ou={{server_name}},ou=servers,ou=groups,dc=orangehrm,dc=com"
     dn = dn.replace('{{server_name}}', server_nick_name.lower())
+
+    # verify for duplications
+    query = "(memberUid=" + user_name + ")"
+    output = ldap_connection.search_s(dn, ldap.SCOPE_BASE, query, ['memberUid'])
+
+    if len(output) > 0:
+        for i in range(len(output)):
+            temp_dn = output[i][0]
+            if temp_dn == dn:
+                print(user_name.capitalize() + " is already authorized to the " + server_nick_name + " server")
+                return True
+
     # memberUid
     user_name = bytes(user_name, 'utf-8')
-    ldap_connection.modify_s(dn, [(0, 'memberUid', user_name)])
+    result = ldap_connection.modify_s(dn, [(0, 'memberUid', user_name)])
+    return result

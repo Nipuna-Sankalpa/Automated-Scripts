@@ -1,6 +1,6 @@
-script_configurations:
-  - remote_user: nipuna
-    remote_password:  'xxxxxx'
+remote_server_login_details:
+  - remote_user: XXXXX
+    remote_password:  'XXXXX'
 
 input_parameters:
   - key: username
@@ -23,7 +23,13 @@ input_parameters:
     display_name: 'Requester Email Address'
 
 email_configurations:
-  user_name: 'nipuna499@gmail.com'
-  password: 'xxxxxx'
-  host: 'smtp.gmail.com'
-  port: '465'
+  user_name: 'XXXX'
+  password: 'XXXXX'
+  host: 'XXX'
+  port: 'XXX'
+
+ldap_directory_details:
+  ldap_host: 'XXXXXXX'
+  ldap_port: 'XXXX'
+  ldap_bind_user_name: 'XXXXXX'
+  ldap_bind_user_password: 'XXXXXX'

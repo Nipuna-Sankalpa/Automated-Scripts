@@ -1,8 +1,14 @@
 sftpAccounts:
-  - username: abc
-    clientType: cloud
-    accountType: temporary
-    validityPeriod: 30
-    added_data: 2019-01-01
+  - accountType: permenant
+    addedDate: '2019-09-15'
+    clientType: onsite
+    requesterEmailAddress: nipuna@orangehrmlive.com
     serverIP: ftp.orangehrm.com
-    requestorEmailAddress: nipuna@orangehrmlive.com
+    username: susith
+  - accountType: temporary
+    addedDate: '2019-09-15'
+    clientType: cloud
+    requesterEmailAddress: nipuna@orangehrmlive.com
+    serverIP: ftp.orangehrm.com
+    username: thisarani
+    validityPeriod: '34'

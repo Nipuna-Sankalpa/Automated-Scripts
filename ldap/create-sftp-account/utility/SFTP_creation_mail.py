@@ -1,15 +1,9 @@
-import os
 import smtplib
 import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-import yaml
-
-
-def get_email_settings():
-    yaml_input = yaml.load(open(os.path.dirname(__file__) + '/../configurations.yml'))
-    return yaml_input['email_configurations']
+from utility.configurations import *
 
 
 def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
@@ -294,7 +288,7 @@ def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
                              style="min-width: 320px; max-width: 595px; display: table-cell; vertical-align: top; width: 579px;">
                             <div style="background-color:#FFFFFF;width:100% !important;">
                                 <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top:0px solid transparent; border-left:8px solid #F1F3F3; border-bottom:0px solid transparent; border-right:8px solid #F1F3F3; padding-top:35px; padding-bottom:5px; padding-right: 50px; padding-left: 50px;">
+                                <div style="border-top:0px solid transparent; border-left:8px solid #F1F3F3; border-bottom:0px solid transparent; border-right:8px solid #F1F3F3; padding-top:0px; padding-bottom:5px; padding-right: 50px; padding-left: 50px;">
                                     <!--<![endif]-->
                                     <!--[if mso]>
                                     <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -326,6 +320,11 @@ def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
                                                         style="font-size: 16px; line-height: 24px;"><strong>Port</strong> : 2112</span>
                                                 </li>
                                             </ul>
+                                        </div>
+                                        <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 12px; line-height: 18px; color: #555555;">
+                                            <p style="font-size: 0px;line-height: 14px;margin-top: 34px;"><span
+                                                    style="font-size: 14px;font-family: serif;"><strong>Note:</strong> This is an automated email. if you have any concerns, please contact <strong><i>Techops</i></strong></span>
+                                            </p>
                                         </div>
                                     </div>
                                     <!--[if mso]></td></tr></table><![endif]-->
@@ -364,12 +363,12 @@ def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
                                 <img alt="SFTP_MAIL_FOOTER.png"
                                      src="https://drive.google.com/uc?export=view&id=1gmLGsWRALiOtcXaSIONMKmvAt91rkz7H"/>
                             </div>
-                        <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                            <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+                <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
         </td>
     </tr>
     </tbody>
