@@ -10,7 +10,7 @@ def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
                sftp_port):
     message = MIMEMultipart("alternative")
     message["Subject"] = "[SFTP Account][Client] SFTP Account for " + sftp_user_name.capitalize()
-    message["From"] = "webmaster@orangehrm.com"
+    message["From"] = "ldapadmin@orangehrm.com"
     message["To"] = receiver_email
 
     # Create the plain-email_body and HTML version of your message
