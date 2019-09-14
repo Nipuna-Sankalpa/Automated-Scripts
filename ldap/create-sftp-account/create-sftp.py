@@ -1,3 +1,4 @@
+#!/bin/python3
 from datetime import datetime
 
 from services.directory_operations import *
