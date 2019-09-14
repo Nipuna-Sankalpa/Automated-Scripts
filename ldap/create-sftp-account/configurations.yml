@@ -1,6 +1,6 @@
 script_configurations:
   - remote_user: nipuna
-    remote_password:  '$2Tl6L4EAk$#'
+    remote_password:  'xxxxxx'
 
 input_parameters:
   - key: username
@@ -21,3 +21,9 @@ input_parameters:
   - key: requesterEmailAddress
     help_text: 'Email address of the person who request the SFTP account [this person will receive the account details]'
     display_name: 'Requester Email Address'
+
+email_configurations:
+  user_name: 'nipuna499@gmail.com'
+  password: 'xxxxxx'
+  host: 'smtp.gmail.com'
+  port: '465'

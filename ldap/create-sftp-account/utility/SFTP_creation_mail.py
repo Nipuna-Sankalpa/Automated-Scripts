@@ -1,10 +1,18 @@
+import os
 import smtplib
 import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import yaml
 
-def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_password, sftp_hostname,
+
+def get_email_settings():
+    yaml_input = yaml.load(open(os.path.dirname(__file__) + '/../configurations.yml'))
+    return yaml_input['email_configurations']
+
+
+def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
                sftp_port):
     message = MIMEMultipart("alternative")
     message["Subject"] = "[SFTP Account][Client] SFTP Account for " + sftp_user_name.capitalize()
@@ -197,7 +205,7 @@ def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_p
                                         <div style="color:#66BECD;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:150%;padding-top:2px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                             <div style="line-height: 18px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; color: #66BECD;">
                                                 <p style="line-height: 36px; text-align: left; font-size: 12px; margin: 0;">
-                                                    <span style="font-size: 24px;font-weight: bold;">{{user_display_name}} -  SFTP Account</span>
+                                                    <span style="font-size: 24px;font-weight: bold;">SFTP Account Details - {{user_display_name}}</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -298,8 +306,6 @@ def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_p
                                             <p style="font-size: 12px; line-height: 24px; margin: 0;"><span
                                                     style="font-size: 16px;">Hi Team,<strong><br/></strong>Please find the following SFTP details for {{user_display_name}}.</span>
                                             </p>
-                                            <p style="font-size: 12px; line-height: 24px; margin: 0;"><span
-                                                    style="font-size: 16px;"> </span></p>
                                             <ul>
                                                 <li style="font-size: 12px; line-height: 18px;"><span
                                                         style="font-size: 16px; line-height: 24px;"><strong>Username</strong> : {{user_name}}</span>
@@ -314,7 +320,7 @@ def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_p
                                                         style="font-size: 16px; line-height: 24px;"><strong>Location</strong> : /data</span>
                                                 </li>
                                                 <li style="font-size: 12px; line-height: 18px;"><span
-                                                        style="font-size: 16px; line-height: 24px;"><strong>Host</strong> : {{host}}</span>
+                                                        style="font-size: 16px; line-height: 24px;"><strong>Host</strong> : {{hostname}}</span>
                                                 </li>
                                                 <li style="font-size: 12px; line-height: 18px;"><span
                                                         style="font-size: 16px; line-height: 24px;"><strong>Port</strong> : 2112</span>
@@ -374,8 +380,8 @@ def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_p
 
             """
 
-    email_body = email_body.replace('{{capitalized_username}}', sftp_user_name.capitalize())
-    email_body = email_body.replace('{{username}}', sftp_user_name)
+    email_body = email_body.replace('{{user_display_name}}', sftp_user_name.capitalize())
+    email_body = email_body.replace('{{user_name}}', sftp_user_name)
     email_body = email_body.replace('{{password}}', sftp_password)
     email_body = email_body.replace('{{hostname}}', sftp_hostname)
     email_body = email_body.replace('{{port}}', sftp_port)
@@ -385,15 +391,11 @@ def send_email(email_user_name, password, receiver_email, sftp_user_name, sftp_p
     # Add HTML/plain-email_body parts to MIMEMultipart message
     # The email client will try to render the last part first
     message.attach(part1)
-
-    # Create secure connection with server and send email
+    email_settings_object = get_email_settings()
+    # Create secure# e connection with server and send email
     context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        server.login(email_user_name, password)
+    with smtplib.SMTP_SSL(email_settings_object['host'], email_settings_object['port'], context=context) as server:
+        server.login(email_settings_object['user_name'], email_settings_object['password'])
         server.sendmail(
-            "webmaster@orangehrm.com", receiver_email, message.as_string()
+            "ldap-admin@orangehrm.com", receiver_email, message.as_string()
         )
-
-
-send_email("nipuna499@gmail.com", "xxxxx", "nipuna@orangehrmlive.com", "nipuna", "nipuna1234", "lcoalhost",
-           "2112")

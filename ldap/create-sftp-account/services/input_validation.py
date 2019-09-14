@@ -55,6 +55,6 @@ def load_registered_server_list():
 def get_server_name(ip):
     server_list = load_registered_server_list()
     for server_object in server_list:
-        if ip and ip == server_list['ip']:
-            return server_list['name']
+        if ip and ip == server_object['ip']:
+            return server_object['name']
     return False

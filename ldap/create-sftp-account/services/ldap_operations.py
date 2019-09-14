@@ -1,6 +1,7 @@
 import base64
 import binascii
 import hashlib
+import os
 import random
 import string
 
@@ -35,18 +36,22 @@ def get_new_uid_number(ldap_connection):
 
     uid_number_integer_list = list(map(int, uid_number_list))
     uid_number_integer_list.sort()
-    last_available_uid_number = uid_number_integer_list.pop()
-    new_uid_number = last_available_uid_number + 1
+
+    if len(uid_number_integer_list) > 0:
+        last_available_uid_number = uid_number_integer_list.pop()
+        new_uid_number = last_available_uid_number + 1
+    else:
+        new_uid_number = 1
 
     # check for the availability of new uid number
     while True:
         ldap_base = "ou=users,dc=orangehrm,dc=com"
-        query = "(uidNumber=" + new_uid_number + ")"
+        query = "(uidNumber=" + str(new_uid_number) + ")"
         output = ldap_connection.search_s(ldap_base, ldap.SCOPE_SUBTREE, query, ['uidNumber'])
         if len(output) <= 0:
             break
         new_uid_number = new_uid_number + 1
-    return new_uid_number
+    return str(new_uid_number)
 
 
 def ldap_add_user(ldap_connection, user_name, client_name, uid_number, server_name, account_type, user_password):
@@ -95,7 +100,7 @@ def search_ldap_user(ldap_connection, uid, ldap_base):
 
 # add sftp user into respective authorize user group
 def authorize_sftp_account(user_name, server_ip, ldap_connection):
-    yaml_input = yaml.load(open("../auto-generated-files/server_name_mapping.yml"))
+    yaml_input = yaml.load(open(os.path.dirname(__file__) + "/../auto-generated-files/server_name_mapping.yml"))
     server_ip_mapping = yaml_input['ohrmCloud']
     server_nick_name = ""
     for x in server_ip_mapping:
