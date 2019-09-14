@@ -70,19 +70,6 @@ def get_input():
     return input_object_list
 
 
-def update_expire_dates_file(user_account_object):
-    file_path = os.path.dirname(__file__) + "/auto-generated-files/expiary_dates_auto_generated_do_not_change.yml"
-    with open(file_path) as readfile:
-        yaml_input = yaml.load(readfile, yaml.SafeLoader)
-    if yaml_input == None:
-        yaml_input = {}
-        yaml_input['sftpAccounts'] = []
-
-    yaml_input['sftpAccounts'].append(user_account_object)
-    with open(file_path, 'w') as outfile:
-        yaml.dump(yaml_input, outfile, default_flow_style=False)
-
-
 def main():
     ldap_configurations_details = get_ldap_configuration_details()
     ldap_host = ldap_configurations_details['ldap_host']

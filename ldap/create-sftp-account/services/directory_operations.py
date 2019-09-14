@@ -3,6 +3,7 @@ import subprocess
 import time
 
 import paramiko
+import yaml
 
 from utility.configurations import get_remote_user
 
@@ -42,3 +43,16 @@ def create_remote_sftp_home_directory(sftp_user_name, remote_ip):
     time.sleep(3)
     shell.close()
     ssh.close()
+
+
+def update_expire_dates_file(user_account_object):
+    file_path = os.path.dirname(__file__) + "/../auto-generated-files/expiary_dates_auto_generated_do_not_change.yml"
+    with open(file_path) as readfile:
+        yaml_input = yaml.load(readfile, yaml.SafeLoader)
+    if yaml_input == None:
+        yaml_input = {}
+        yaml_input['sftpAccounts'] = []
+
+    yaml_input['sftpAccounts'].append(user_account_object)
+    with open(file_path, 'w') as outfile:
+        yaml.dump(yaml_input, outfile, default_flow_style=False)
