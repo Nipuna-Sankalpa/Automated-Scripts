@@ -1,5 +1,5 @@
-import datetime
 import os
+from datetime import datetime
 
 
 def update_sftp_deletion_log():
