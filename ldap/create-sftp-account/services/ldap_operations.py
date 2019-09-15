@@ -4,6 +4,7 @@ import hashlib
 import os
 import random
 import string
+from builtins import print
 
 import ldap
 import ldap.modlist as modlist
@@ -12,8 +13,11 @@ import yaml
 
 def generate_password():
     raw_password = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
-    sha256_pwd = hashlib.sha256(bytes(raw_password, 'utf-8')).hexdigest()
-    ldap_password = "{SHA-256}" + base64.b64encode(binascii.unhexlify(sha256_pwd)).decode('utf-8')
+    salt = os.urandom(4)
+    ssha_pwd = hashlib.sha1(bytes(raw_password, 'utf-8'))
+    ssha_pwd.update(salt)
+    ldap_password = "{SSHA}" + base64.b64encode(binascii.unhexlify(ssha_pwd.hexdigest()) + salt).decode('utf-8')
+
     return {"raw_password": raw_password, "ldap_password": ldap_password}
 
 
@@ -27,8 +31,7 @@ def get_new_uid_number(ldap_connection):
     ldap_base = "ou=clients,ou=users,dc=orangehrm,dc=com"
     uid_number_list = []
     output = ldap_connection.search_s(ldap_base, ldap.SCOPE_SUBTREE, query, ['uidNumber'])
-    if not len(output) > 0:
-        return False
+
     for i in range(len(output)):
         uid_number = output[i][1]['uidNumber'][0].decode('utf-8')
         uid_number_list.append(uid_number)
