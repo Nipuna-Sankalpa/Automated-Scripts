@@ -1,29 +1,24 @@
 from datetime import date
 from datetime import timedelta
 
+from services.directory_operations import remove_deleted_accounts_from_config_file
+from services.ldap_operations import ldap_delete_user, ldap_connect, remove_sftp_account_from_user_groups
 from utility.SFTP_deletion_mail import *
 from utility.constants import *
 
 
 def main():
-    notification_object = get_sftp_account_deletion_notification_periods()
-    notification_time_period = notification_object['time_period']
     sftp_account_array = get_expired_account_object()
+    for i, sftp_account in enumerate(sftp_account_array):
+        account_type = sftp_account['account_type']
 
-    for sftp_account in sftp_account_array:
-        accountType = sftp_account['accountType']
-
-        if accountType == account_type_permanent:
+        if account_type == account_type_permanent:
             continue
-
-        addedDate = sftp_account['addedDate']
-        clientType = sftp_account['clientType']
-        requesterEmailAddress = sftp_account['requesterEmailAddress']
-        serverIP = sftp_account['serverIP']
-        username = sftp_account['username']
-        validityPeriod = sftp_account['validityPeriod']
-
+        delete_status = delete_account(sftp_account)
         send_warning_notification(sftp_account)
+        if delete_status:
+            del sftp_account_array[i]
+    remove_deleted_accounts_from_config_file(sftp_account)
 
 
 def send_warning_notification(account_object):
@@ -37,7 +32,29 @@ def send_warning_notification(account_object):
 
 
 def delete_account(sftp_account):
-    print('')
+    account_status = time_difference(sftp_account['addedDate'], sftp_account['validityPeriod'])
+
+    if account_status:
+        ldap_configurations_details = get_ldap_configuration_details()
+        ldap_host = ldap_configurations_details['ldap_host']
+        ldap_port = ldap_configurations_details['ldap_port']
+        ldap_bind_user_name = ldap_configurations_details['ldap_bind_user_name']
+        ldap_bind_user_password = ldap_configurations_details['ldap_bind_user_password']
+
+        dn = "uid={{user_name}},ou={{account_type}},ou=clients,ou=users,dc=orangehrm,dc=com"
+        dn = dn.replace("{{user_name}}", sftp_account['username'])
+        dn = dn.replace("{{account_type}}", account_type_temporary)
+
+        ldap_connection = ldap_connect(ldap_host, ldap_port, 'ldaps')
+        connection_status = ldap_connection.simple_bind_s(ldap_bind_user_name, ldap_bind_user_password)
+
+        if connection_status:
+            ldap_delete_user(ldap_connection, dn)
+            remove_sftp_account_from_user_groups(ldap_connection, sftp_account['username'])
+            send_deletion_email()
+        return True
+
+    return False
 
 
 def time_difference(added_date, delta):
@@ -46,6 +63,6 @@ def time_difference(added_date, delta):
     today = date.today()
     date_diff = today - added_date
 
-    if date_diff.days >= int(delta):
+    if date_diff.days == int(delta):
         return True
     return False

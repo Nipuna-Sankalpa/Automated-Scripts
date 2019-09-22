@@ -1,14 +1,14 @@
 import base64
 import binascii
 import hashlib
-import os
 import random
 import string
 from builtins import print
 
 import ldap
 import ldap.modlist as modlist
-import yaml
+
+from utility.configurations import *
 
 
 def generate_password():
@@ -136,3 +136,17 @@ def authorize_sftp_account(user_name, server_ip, ldap_connection):
     user_name = bytes(user_name, 'utf-8')
     result = ldap_connection.modify_s(dn, [(0, 'memberUid', user_name)])
     return result
+
+
+def remove_sftp_account_from_user_groups(ldap_connection, user_name):
+    ldap_base = "ou=groups,dc=orangehrm,dc=com"
+    query = "(memberUid=" + str(user_name) + ")"
+    allowed_groups = ldap_connection.search_s(ldap_base, ldap.SCOPE_SUBTREE, query)
+    if len(allowed_groups) <= 0:
+        return False
+
+    for allowed_group in allowed_groups:
+        dn = allowed_group[0]
+        user_name = bytes(user_name, 'utf-8')
+        ldap_connection.modify_s(dn, [(1, 'memberUid', user_name)])
+    return True

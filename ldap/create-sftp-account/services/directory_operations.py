@@ -49,9 +49,8 @@ def update_expire_dates_file(user_account_object):
     file_path = os.path.dirname(__file__) + "/../auto-generated-files/expiary_dates_auto_generated_do_not_change.yml"
     with open(file_path) as readfile:
         yaml_input = yaml.load(readfile, yaml.SafeLoader)
-    if yaml_input == None:
-        yaml_input = {}
-        yaml_input['sftpAccounts'] = []
+    if yaml_input is None:
+        yaml_input = {'sftpAccounts': []}
 
     yaml_input['sftpAccounts'].append(user_account_object)
     with open(file_path, 'w') as outfile:
@@ -69,3 +68,32 @@ def clean_directory(directory_path):
         result = subprocess.call(['rm', '-rf', directory_path])
     else:
         return False
+
+
+def remove_deleted_accounts_from_config_file(object_array):
+    file_path = os.path.dirname(__file__) + "/../auto-generated-files/expiary_dates_auto_generated_do_not_change.yml"
+    with open(file_path) as readfile:
+        yaml_input = yaml.load(readfile, yaml.SafeLoader)
+    if yaml_input is None:
+        yaml_input = {'sftpAccounts': []}
+
+    yaml_input['sftpAccounts'] = object_array
+    with open(file_path, 'w') as outfile:
+        yaml.dump(yaml_input, outfile, default_flow_style=False)
+
+
+def clean_remote_sftp_home_directory(sftp_user_name, remote_ip):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    login_details = get_remote_user()
+    ssh.connect(remote_ip, port=2112, username=login_details['user_name'], password=login_details['password'])
+    shell = ssh.invoke_shell()
+    time.sleep(1)
+    shell.send("sudo rm -rf /ftp/" + sftp_user_name + "\n")
+    print(shell.recv(9999).decode('utf-8'))
+    time.sleep(2)
+    shell.send(login_details['password'] + "\n")
+    time.sleep(3)
+    print(shell.recv(9999).decode('utf-8'))
+    shell.close()
+    ssh.close()
