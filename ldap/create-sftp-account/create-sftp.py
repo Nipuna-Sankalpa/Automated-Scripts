@@ -7,6 +7,7 @@ from services.ldap_operations import *
 from services.update_log import update_sftp_creation_log
 from utility.SFTP_creation_mail import *
 from utility.configurations import *
+from utility.constants import *
 
 
 def separator():
@@ -27,7 +28,7 @@ def get_input():
         print("SFTP Account Details :")
         separator()
         for i in range(len(input_key_list)):
-            if input_key_list[i]['key'] == 'validityPeriod' and input_object['accountType'] == 'permenant':
+            if input_key_list[i]['key'] == 'validityPeriod' and input_object['accountType'] == account_type_permanent:
                 print("Validity period is not required since account type is permanent")
             else:
                 print("Tips : " + input_key_list[i]['help_text'])
@@ -129,7 +130,8 @@ def main():
             send_email(input_object['requesterEmailAddress'], input_object['username'], user_password['raw_password'],
                        input_object['serverIP'], '2112')
             input_object['addedDate'] = datetime.today().strftime('%Y-%m-%d')
-            update_expire_dates_file(input_object)
+            if input_object['accountType'] is not account_type_permanent:
+                update_expire_dates_file(input_object)
         else:
             print("LDAP Account Creation FAIL")
 

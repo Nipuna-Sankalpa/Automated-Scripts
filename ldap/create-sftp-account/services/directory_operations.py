@@ -62,3 +62,10 @@ def clean_input_file():
     input_cleanup_file_path = os.path.dirname(__file__) + '/../auto-generated-files/temporary_input_file.yml'
     input_file_path = os.path.dirname(__file__) + '/../input.yml'
     os.system('cat ' + input_cleanup_file_path + ' > ' + input_file_path)
+
+
+def clean_directory(directory_path):
+    if os.path.exists(directory_path):
+        result = subprocess.call(['rm', '-rf', directory_path])
+    else:
+        return False

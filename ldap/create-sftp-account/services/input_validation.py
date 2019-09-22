@@ -5,6 +5,8 @@ import socket
 import yaml
 from validate_email import validate_email
 
+from utility.constants import *
+
 
 def input_validation(input_key, input_value):
     email_regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
@@ -13,7 +15,7 @@ def input_validation(input_key, input_value):
             return True
         return False
     elif input_key == "accountType":
-        if input_value == "temporary" or input_value == "permenant":
+        if input_value == account_type_temporary or input_value == account_type_permanent:
             return True
         return False
     elif input_key == "username":
