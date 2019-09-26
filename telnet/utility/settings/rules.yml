@@ -1,0 +1,7 @@
+connection_rules:
+  - domain: 'xxx'
+    port: 'xxx'
+    note: 'xxx'
+  - domain: 'xxx'
+    port: 'xxx'
+    note: 'xxx'
