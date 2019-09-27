@@ -1,4 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN"
+import smtplib
+import ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+from utility.configurations import *
+
+
+def send_pass_email(domain, port, description):
+    server_details = get_server_settings()
+    receiver_email = " ,".join(get_alert_settings())
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "[OHRM Cloud][Monitoring] Connection Successful - Alert Closed" + server_details[
+        'server_name'].capitalize()
+    message["From"] = "server-monitoring@orangehrm.com"
+    message["To"] = receiver_email
+
+    # Create the plain-email_body and HTML version of your message
+    email_body = """\
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -153,7 +172,7 @@
                                                                                         <li style="font-size:14px;font-family:'courier new',courier,'lucida sans typewriter','lucida typewriter',monospace;line-height:14px;Margin-bottom:15px;color:#333333">
                                                                                             <strong>Domain Name
                                                                                                 :</strong>
-                                                                                            {{domain_nme}}
+                                                                                            {{domain_name}}
                                                                                         </li>
                                                                                         <li style="font-size:14px;font-family:'courier new',courier,'lucida sans typewriter','lucida typewriter',monospace;line-height:14px;Margin-bottom:15px;color:#333333">
                                                                                             <strong>Port :</strong>
@@ -308,3 +327,25 @@
 </div>
 </body>
 </html>
+
+                """
+
+    email_body = email_body.replace('{{domain_name}}', domain)
+    email_body = email_body.replace('{{port}}', port)
+    email_body = email_body.replace('{{description}}', description)
+    # Turn these into plain/html MIMEText objects
+    part1 = MIMEText(email_body, "html")
+
+    # Add HTML/plain-email_body parts to MIMEMultipart message
+    # The email client will try to render the last part first
+    message.attach(part1)
+    email_settings_object = get_email_settings()
+    # Create secure# e connection with server and send email
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP(email_settings_object['host'], email_settings_object['port']) as server:
+        server.starttls(context=context)  # Secure the connection
+        server.login(email_settings_object['user_name'], email_settings_object['password'])
+        server.sendmail(
+            "server-monitoring@orangehrm.com", receiver_email, message.as_string()
+        )

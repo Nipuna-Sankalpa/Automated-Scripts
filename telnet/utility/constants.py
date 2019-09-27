@@ -1,2 +1,3 @@
-account_type_permanent = "permenant"
-account_type_temporary = "temporary"
+alert_status_fail = "FAIL"
+alert_status_triggered = "TRIGGERED"
+alert_status_pass = "PASS"

@@ -1,5 +1,11 @@
 email_configurations:
-  user_name: 'nipuna499@gmail.com'
-  password: 'PhR6T516$'
+  user_name: ''
+  password: ''
   host: 'smtp.gmail.com'
   port: '587'
+
+server_details:
+  server_name: 'Artemis'
+
+alert_settings:
+  alert_recipient: []
