@@ -34,7 +34,7 @@ def main():
         elif status is True:
             if rule['status'] == alert_status_fail:
                 send_pass_email(_ip, _port, _note)
-                rule['status'] = alert_status_fail
+                rule['status'] = alert_status_pass
                 update_rules_file(rules_object)
 
 
