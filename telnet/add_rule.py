@@ -20,7 +20,6 @@ def main():
         _port = input("*Enter Port: ")
         _note = input("*Enter Description which should be shown in alert email: ")
         status = telnet(_domain, _port, 2)
-        print(status)
 
         if not (_domain == '' or _port == '' or _note == '' or (not status)):
             add_rule({
