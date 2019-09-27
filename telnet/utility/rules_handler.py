@@ -22,7 +22,10 @@ def update_rules_file(file_object):
 def add_rule(rule_object):
     rules = get_configuration_file()
     try:
-        rules['connection_rules'].append(rule_object)
+        if rules['connection_rules'] is None:
+            rules['connection_rules'] = [rule_object]
+        else:
+            rules['connection_rules'].append(rule_object)
         update_rules_file(rules)
     except:
         return False
