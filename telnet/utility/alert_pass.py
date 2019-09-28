@@ -347,5 +347,5 @@ def send_pass_email(domain, port, description):
         server.starttls(context=context)  # Secure the connection
         server.login(email_settings_object['user_name'], email_settings_object['password'])
         server.sendmail(
-            "server-monitoring@orangehrm.com", receiver_email, message.as_string()
+            "server-monitoring@orangehrm.com", receiver_email.split(","), message.as_string()
         )
