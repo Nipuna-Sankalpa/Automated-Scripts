@@ -8,7 +8,7 @@ from utility.configurations import *
 
 def send_fail_email(domain, port, description):
     server_details = get_server_settings()
-    receiver_email = " ,".join(get_alert_settings())
+    receiver_email = ",".join(get_alert_settings())
     message = MIMEMultipart("alternative")
     message["Subject"] = "[OHRM Cloud][Monitoring][Critical] Connection Failure - " + server_details[
         'server_name'].capitalize()
@@ -328,5 +328,5 @@ def send_fail_email(domain, port, description):
         server.starttls(context=context)  # Secure the connection
         server.login(email_settings_object['user_name'], email_settings_object['password'])
         server.sendmail(
-            "server-monitoring@orangehrm.com", receiver_email, message.as_string()
+            "server-monitoring@orangehrm.com", receiver_email.split(','), message.as_string()
         )
