@@ -9,7 +9,7 @@ def send_email(receiver_email):
     message = MIMEMultipart("alternative")
     message["Subject"] = "[Open-Source][Marketplace] Error Log Updated"
     message["From"] = "webmaster@orangehrm.com"
-    message["To"] = receiver_email
+    message["To"] = ",".join(receiver_email)
     message["Cc"] = "XXXXX"
 
     # Create the plain-email_body and HTML version of your message
@@ -363,14 +363,14 @@ def mail():
     output = os.popen('md5sum ' + file_path).read()
     current_md5value = str(output).split(' ')[0]
     if not (os.path.exists(file_path)) or not (os.path.exists(temp_file_path)):
-        send_email("XXXXXXX")
+        send_email([])
         return
 
     with open(temp_file_path, 'r') as file:
         old_md5value = file.read()
 
     if old_md5value != current_md5value:
-        send_email("nipuna@orangehrmlive.com")
+        send_email([])
         update_file(temp_file_path, current_md5value)
 
 
