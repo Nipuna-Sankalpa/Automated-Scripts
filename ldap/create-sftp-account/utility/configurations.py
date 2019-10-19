@@ -42,7 +42,6 @@ def get_ldap_configuration_details():
 
 def get_sftp_account_deletion_notification_periods():
     configuration_object = get_configuration_file()
-    configuration_values = configuration_object['ldap_directory_details']
     return configuration_object['sftp_account_deletion_notification']
 
 

@@ -23,13 +23,16 @@ input_parameters:
     display_name: 'Requester Email Address'
 
 email_configurations:
-  user_name: 'XXXX'
-  password: 'XXXXX'
-  host: 'XXX'
-  port: 'XXX'
+  user_name: 'nipuna499@gmail.com'
+  password: 'PhR6T516$'
+  host: 'smtp.gmail.com'
+  port: '587'
 
 ldap_directory_details:
-  ldap_host: 'XXXXXXX'
-  ldap_port: 'XXXX'
-  ldap_bind_user_name: 'XXXXXX'
-  ldap_bind_user_password: 'XXXXXX'
+  ldap_host: 'dev-ldap.orangehrm.com'
+  ldap_port: '636'
+  ldap_bind_user_name: 'cn=admin,dc=orangehrm,dc=com'
+  ldap_bind_user_password: 'pL32Fk7UxU2o'
+
+sftp_account_deletion_notification:
+  time_period: [6,3]

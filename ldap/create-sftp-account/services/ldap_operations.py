@@ -139,7 +139,7 @@ def authorize_sftp_account(user_name, server_ip, ldap_connection):
 
 
 def remove_sftp_account_from_user_groups(ldap_connection, user_name):
-    ldap_base = "ou=groups,dc=orangehrm,dc=com"
+    ldap_base = "ou=servers,ou=groups,dc=orangehrm,dc=com"
     query = "(memberUid=" + str(user_name) + ")"
     allowed_groups = ldap_connection.search_s(ldap_base, ldap.SCOPE_SUBTREE, query)
     if len(allowed_groups) <= 0:

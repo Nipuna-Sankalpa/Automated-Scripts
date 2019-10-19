@@ -10,7 +10,7 @@ from utility.constants import *
 def main():
     sftp_account_array = get_expired_account_object()
     for i, sftp_account in enumerate(sftp_account_array):
-        account_type = sftp_account['account_type']
+        account_type = sftp_account_array[i]['accountType']
 
         if account_type == account_type_permanent:
             continue
@@ -63,6 +63,9 @@ def time_difference(added_date, delta):
     today = date.today()
     date_diff = today - added_date
 
-    if date_diff.days == int(delta):
+    if date_diff.days >= int(delta):
         return True
     return False
+
+
+main()

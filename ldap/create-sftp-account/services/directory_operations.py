@@ -96,5 +96,3 @@ def clean_remote_sftp_home_directory(sftp_user_name, remote_ip):
     shell.close()
     ssh.close()
 
-
-create_remote_sftp_home_directory('nipuna', '161.47.68.145')
