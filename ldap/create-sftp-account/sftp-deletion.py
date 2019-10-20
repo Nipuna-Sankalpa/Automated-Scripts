@@ -1,8 +1,11 @@
 from datetime import date
 from datetime import timedelta
 
-from services.directory_operations import remove_deleted_accounts_from_config_file
+from services.directory_operations import remove_deleted_accounts_from_config_file, clean_directory, \
+    clean_remote_sftp_home_directory
+from services.input_validation import get_server_name, resolve_domain_name
 from services.ldap_operations import ldap_delete_user, ldap_connect, remove_sftp_account_from_user_groups
+from services.update_log import update_sftp_deletion_log
 from utility.SFTP_deletion_mail import *
 from utility.constants import *
 
@@ -15,10 +18,12 @@ def main():
         if account_type == account_type_permanent:
             continue
         delete_status = delete_account(sftp_account)
-        send_warning_notification(sftp_account)
+        if delete_status is not True:
+            send_warning_notification(sftp_account)
+
         if delete_status:
             del sftp_account_array[i]
-    remove_deleted_accounts_from_config_file(sftp_account)
+    remove_deleted_accounts_from_config_file(sftp_account_array)
 
 
 def send_warning_notification(account_object):
@@ -51,7 +56,13 @@ def delete_account(sftp_account):
         if connection_status:
             ldap_delete_user(ldap_connection, dn)
             remove_sftp_account_from_user_groups(ldap_connection, sftp_account['username'])
-            send_deletion_email()
+            server_name = get_server_name(resolve_domain_name(sftp_account['serverIP']))
+            if server_name == "Artemis":
+                clean_directory("/ftp/" + sftp_account['username'])
+            else:
+                clean_remote_sftp_home_directory(sftp_account['username'], sftp_account['serverIP'])
+            update_sftp_deletion_log(sftp_account)
+            send_deletion_email(sftp_account)
         return True
 
     return False

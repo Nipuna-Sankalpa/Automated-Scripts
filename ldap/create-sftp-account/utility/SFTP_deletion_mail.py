@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from utility.configurations import *
+from datetime import datetime
 
 
 def send_warning_email(sftp_account_object):
@@ -405,7 +406,7 @@ def send_deletion_email(sftp_account_object):
     sftp_user_name = sftp_account_object['username']
     receiver_email = sftp_account_object['requesterEmailAddress']
     sftp_hostname = sftp_account_object['serverIP']
-    sftp_deletion_date = sftp_account_object['deletionDate']
+    sftp_deletion_date = str(datetime.now())
 
     message = MIMEMultipart("alternative")
     message["Subject"] = "[SFTP Account][Client] Account Deleted - " + sftp_user_name.capitalize()

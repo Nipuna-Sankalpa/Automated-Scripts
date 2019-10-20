@@ -84,10 +84,11 @@ def clean_remote_sftp_home_directory(sftp_user_name, remote_ip):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     login_details = get_remote_user()
+    escaped_user_name = sftp_user_name.replace("..", "")
     ssh.connect(remote_ip, port=2112, username=login_details['user_name'], password=login_details['password'])
     shell = ssh.invoke_shell()
     time.sleep(1)
-    shell.send("sudo rm -rf /ftp/" + sftp_user_name + "\n")
+    shell.send("sudo rm -rf /ftp/" + escaped_user_name + "\n")
     print(shell.recv(9999).decode('utf-8'))
     time.sleep(2)
     shell.send(login_details['password'] + "\n")
@@ -96,3 +97,5 @@ def clean_remote_sftp_home_directory(sftp_user_name, remote_ip):
     shell.close()
     ssh.close()
 
+
+clean_directory("/ftp/test1")
