@@ -97,5 +97,3 @@ def clean_remote_sftp_home_directory(sftp_user_name, remote_ip):
     shell.close()
     ssh.close()
 
-
-clean_directory("/ftp/test1")

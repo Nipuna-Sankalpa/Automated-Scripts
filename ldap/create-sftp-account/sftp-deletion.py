@@ -32,7 +32,7 @@ def send_warning_notification(account_object):
         delta = int(account_object['validityPeriod']) - int(period)
         should_notified = time_difference(account_object['addedDate'], delta)
         if should_notified:
-            account_object['deletionDate'] = date.today() + timedelta(days=int(period))
+            account_object['deletionDate'] = str(date.today() + timedelta(days=int(period)))
             send_warning_email(account_object)
 
 
@@ -74,7 +74,7 @@ def time_difference(added_date, delta):
     today = date.today()
     date_diff = today - added_date
 
-    if date_diff.days >= int(delta):
+    if date_diff.days == int(delta):
         return True
     return False
 
