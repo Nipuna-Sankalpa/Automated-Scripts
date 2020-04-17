@@ -9,7 +9,7 @@ from utility.configurations import *
 def send_fail_email(domain, port, description, email_subject):
     receiver_email = ",".join(get_alert_settings())
     message = MIMEMultipart("alternative")
-    message["Subject"] = email_subject
+    message["Subject"] = email_subject + " [ALERT OPEN]"
     message["From"] = "server-monitoring@orangehrm.com"
     message["To"] = receiver_email
 
