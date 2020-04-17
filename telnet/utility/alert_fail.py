@@ -6,12 +6,10 @@ from email.mime.text import MIMEText
 from utility.configurations import *
 
 
-def send_fail_email(domain, port, description):
-    server_details = get_server_settings()
+def send_fail_email(domain, port, description, email_subject):
     receiver_email = ",".join(get_alert_settings())
     message = MIMEMultipart("alternative")
-    message["Subject"] = "[OHRM Cloud][Monitoring][Critical] Connection Failure - " + server_details[
-        'server_name'].capitalize()
+    message["Subject"] = email_subject
     message["From"] = "server-monitoring@orangehrm.com"
     message["To"] = receiver_email
 

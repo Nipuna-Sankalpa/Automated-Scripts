@@ -1,0 +1,15 @@
+all:
+  doctrine:
+    class: ohrmDoctrineDatabase
+    param:
+      dsn: 'mysql:host=db;port=3306;dbname=nipuna'
+      username: root
+      password: 04bdb689cae37ded6bc7f8f37f4e6d56605a9bef4c7bb7d9a416014bcb80f576
+      attributes: { export: tables }
+test:
+  doctrine:
+    class: ohrmDoctrineDatabase
+    param:
+      dsn: 'mysql:host=db;port=3306;dbname=test_6410tag-prod-infinity'
+      username: root
+      password: 04bdb689cae37ded6bc7f8f37f4e6d56605a9bef4c7bb7d9a416014bcb80f576

@@ -19,13 +19,15 @@ def main():
         _domain = input("*Enter Domain: ")
         _port = input("*Enter Port: ")
         _note = input("*Enter Description which should be shown in alert email: ")
+        _subject = input("*Enter Notification subject which should be shown in alert email: ")
         status = telnet(_domain, _port, 2)
 
         if not (_domain == '' or _port == '' or _note == '' or (not status)):
             add_rule({
                 'domain': _domain,
                 'port': _port,
-                'note': _note,
+                'description': _note,
+                'notification_subject': _subject,
                 'status': alert_status_pass
             })
             break

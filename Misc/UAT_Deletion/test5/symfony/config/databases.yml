@@ -1,0 +1,15 @@
+all:
+  doctrine:
+    class: ohrmDoctrineDatabase
+    param:
+      dsn: 'mysql:host=db;port=3306;dbname=643tag-prod-infinity'
+      username: root
+      password: 0827d4b22e3f573c0feeb377ce79941b125987fae6831b10201a24ad1d865d69
+      attributes: { export: tables }
+test:
+  doctrine:
+    class: ohrmDoctrineDatabase
+    param:
+      dsn: 'mysql:host=db;port=3306;dbname=test_643tag-prod-infinity'
+      username: root
+      password: 0827d4b22e3f573c0feeb377ce79941b125987fae6831b10201a24ad1d865d69[root@infinity-server config]#

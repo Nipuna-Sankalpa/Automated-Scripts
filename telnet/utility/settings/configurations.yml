@@ -1,11 +1,9 @@
 email_configurations:
   user_name: ''
   password: ''
-  host: 'smtp.gmail.com'
-  port: '587'
+  host: ''
+  port: ''
 
-server_details:
-  server_name: 'Artemis'
 
 alert_settings:
-  alert_recipient: []
+  alert_recipient: ['']

@@ -13,11 +13,6 @@ def get_email_settings():
     return configuration_object['email_configurations']
 
 
-def get_server_settings():
-    configuration_object = get_configuration_file()
-    return configuration_object['server_details']
-
-
 def get_alert_settings():
     configuration_object = get_configuration_file()
     emails = configuration_object['alert_settings']['alert_recipient']
