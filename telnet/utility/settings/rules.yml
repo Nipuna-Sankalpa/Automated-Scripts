@@ -1,6 +1,1 @@
 connection_rules:
-- domain: ""
-  description: ""
-  notification_subject: ""
-  port: ''
-  status: ""
