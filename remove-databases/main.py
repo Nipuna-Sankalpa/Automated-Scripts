@@ -47,7 +47,7 @@ def database_filter(legitimate_list, database):
 
 
 def delete_databases(db_name, db_host, root_password):
-    exclusion_list = ["information_schema", "mysql", "performance_schema", "ccsgoal", "requestcentraldb",
+    exclusion_list = ["information_schema", "mysql", "performance_schema", "requestcentraldb",
                       "requestdesk_central_db_11", "requestdesk_central_db_beta7", "requestdesk_central_db_beta8",
                       "requestdesk_central_db_rc1", "requestdesk_central_db_rc2", "requestdesk_centraldb10release",
                       "requestdesk_centraldb_11_release", "requestdesk_centraldb_1_0_release"]
@@ -65,7 +65,7 @@ def delete_databases(db_name, db_host, root_password):
 def main():
     db_host = "172.40.0.102"
     root_password = "p2835GmVeBpbPLT"
-    web_root = "/var/lib/docker/workspace/infinity/html/OHRMStandalone"
+    web_root = "/var/lib/docker/workspace/infinity/html/VASHosting"
 
     database_array = get_legitimate_db_list(web_root)
     print(database_array)
