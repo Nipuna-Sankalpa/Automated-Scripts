@@ -22,6 +22,7 @@ def get_legitimate_db_list(webroot):
                                 tmp = db_settings['all']['doctrine']['param']['dsn']
                                 literals = tmp.split(";")
                                 db_name = literals[2].split("=")[1]
+                                print(db_name)
                                 db_array.append(db_name)
                             except yaml.YAMLError as error:
                                 print(error)
