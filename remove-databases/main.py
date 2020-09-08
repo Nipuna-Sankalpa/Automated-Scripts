@@ -9,6 +9,7 @@ def get_legitimate_db_list(webroot):
     if not isExist:
         return "Web root does not exist"
     for dirname, dirnames_first_level, filenames in os.walk(webroot):
+        print(dirnames_first_level)
         for directory_first_level in dirnames_first_level:
             secondary_webroot = webroot + '/' + directory_first_level
             print(secondary_webroot)
