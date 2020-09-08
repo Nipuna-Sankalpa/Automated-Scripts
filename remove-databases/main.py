@@ -12,9 +12,9 @@ def get_legitimate_db_list(webroot):
         secondary_web_root = webroot + '/' + directory_first_level
         print(secondary_web_root)
         for directory in os.listdir(secondary_web_root):
+            db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/config/databases.yml"
             if directory_first_level == "OPENSOURCE":
                 db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/web/symfony/config/databases.yml"
-            db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/config/databases.yml"
             isExist = os.path.exists(db_yml_path)
             if isExist:
                 with open(db_yml_path, "r") as configuration:
