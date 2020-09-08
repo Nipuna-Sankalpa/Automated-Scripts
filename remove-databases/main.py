@@ -11,6 +11,7 @@ def get_legitimate_db_list(webroot):
     for dirname, dirnames_first_level, filenames in os.walk(webroot):
         for directory_first_level in dirnames_first_level:
             secondary_webroot = webroot + '/' + directory_first_level
+            print(secondary_webroot)
             for dirname, secondary_directory, filenames in os.walk(secondary_webroot):
                 for directory in secondary_directory:
                     db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/config/databases.yml"
