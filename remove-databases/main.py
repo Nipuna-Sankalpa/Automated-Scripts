@@ -63,6 +63,7 @@ def main():
     web_root = "/var/lib/docker/workspace/infinity/html/OHRMStandalone"
 
     database_array = get_legitimate_db_list(web_root)
+    print(database_array)
     total_db_list = get_total_db_list(db_host, root_password)
     for db in total_db_list:
         db_name = db[0]
