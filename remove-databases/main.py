@@ -12,7 +12,7 @@ def get_legitimate_db_list(webroot):
             secondary_webroot = webroot + '/' + directory_first_level
             for dirname, secondary_directory, filenames in os.walk(secondary_webroot):
                 for directory in secondary_directory:
-                    db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/config/database.yml"
+                    db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/config/databases.yml"
                     isExist = os.path.exists(db_yml_path)
                     if isExist:
                         with open(db_yml_path, "r") as configuration:
