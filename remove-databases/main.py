@@ -39,7 +39,7 @@ def database_filter(db_name, db_host, root_password):
 
 
 def main():
-    database_array = get_legitimate_db_list("/home/nipuna/Documents")
+    database_array = get_legitimate_db_list("/var/lib/docker/workspace/infinity/html/OHRMStandalone")
     print(database_array)
     return True
 
