@@ -63,7 +63,7 @@ def delete_databases(db_name, db_host, root_password):
 def main():
     db_host = "172.40.0.102"
     root_password = "p2835GmVeBpbPLT"
-    web_root = "/var/lib/docker/workspace/infinity/html/VASHosting"
+    web_root = "/var/lib/docker/workspace/infinity/html/OHRMStandalone"
 
     database_array = get_legitimate_db_list(web_root)
     print(database_array)
