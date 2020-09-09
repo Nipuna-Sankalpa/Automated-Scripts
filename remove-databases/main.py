@@ -48,15 +48,15 @@ def database_filter(legitimate_list, database):
 
 def delete_databases(db_name, db_host, root_password):
     exclusion_list = ["information_schema", "mysql", "performance_schema", "requestdesk_centraldb_11_release",
-                      "uat_rd_dummy_db", "instance_test"]
+                      "uat_rd_dummy_db"]
     if db_name not in exclusion_list:
-        # db_connection = pymysql.connect(db_host, "root", root_password)
-        # db_pointer = db_connection.cursor()
-        # db_pointer.execute("drop database " + db_name)
-        # result = db_pointer.fetchone()
-        # db_connection.close()
+        db_connection = pymysql.connect(db_host, "root", root_password)
+        db_pointer = db_connection.cursor()
+        db_pointer.execute("drop database " + db_name)
+        result = db_pointer.fetchone()
+        db_connection.close()
         print(db_name)
-        # return result
+        return result
     return False
 
 
