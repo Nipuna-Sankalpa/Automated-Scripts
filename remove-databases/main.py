@@ -66,10 +66,7 @@ def database_filter_by_date(time_period):
     return final_list
 
 
-def database_filter(database):
-    legitimate_list = get_legitimate_db_list(web_root)
-    old_databases = database_filter_by_date("7")
-
+def database_filter(database, legitimate_list, old_databases):
     if database in legitimate_list:
         return False
     if database not in old_databases:
@@ -96,9 +93,11 @@ def delete_databases(db_name, db_host, root_password):
 
 def main():
     total_db_list = get_total_db_list(db_host, root_password)
+    legitimate_list = get_legitimate_db_list(web_root)
+    old_databases = database_filter_by_date("7")
     for db in total_db_list:
         db_name = db[0]
-        if database_filter(db_name):
+        if database_filter(db_name, legitimate_list, old_databases):
             delete_databases(db_name, db_host, root_password)
     return True
 
