@@ -48,7 +48,7 @@ def get_total_db_list(db_host, root_password):
 
 def database_filter_by_date(time_period):
     sql_query = "SELECT table_schema,MIN(create_time) create_time FROM information_schema.tables Group by " \
-                "TABLE_SCHEMA having create_time < DATE(NOW()) - INTERVAL " + time_period + "DAY Order by create_time " \
+                "TABLE_SCHEMA having create_time < DATE(NOW()) - INTERVAL " + time_period + " DAY Order by create_time " \
                                                                                             "desc;"
     db_connection = pymysql.connect(db_host, db_user, root_password)
     db_pointer = db_connection.cursor()
