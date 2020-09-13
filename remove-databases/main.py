@@ -2,11 +2,11 @@ import os
 import yaml
 import pymysql
 
-web_root = "/var/lib/docker/workspace/infinity/html/OHRMStandalone"
-db_host = "172.40.0.102"
+web_root = "/var/lib/docker/workspace/jade/html/OHRMStandalone"
+db_host = "172.70.0.102"
 db_user = "root"
-root_password = "p2835GmVeBpbPLT"
-soft_deletion = False
+root_password = "1z5mMo@TxG7R"
+soft_deletion = True
 
 
 def get_legitimate_db_list(webroot):
