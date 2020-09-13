@@ -80,16 +80,17 @@ def database_filter(database):
 def delete_databases(db_name, db_host, root_password):
     exclusion_list = ["information_schema", "mysql", "performance_schema"]
     if db_name not in exclusion_list:
-        db_connection = pymysql.connect(db_host, db_user, root_password)
-        db_pointer = db_connection.cursor()
+
         if soft_deletion:
             print(db_name)
         else:
+            db_connection = pymysql.connect(db_host, db_user, root_password)
+            db_pointer = db_connection.cursor()
             db_pointer.execute("drop database `" + db_name + "`;")
-        result = db_pointer.fetchone()
-        db_connection.close()
+            result = db_pointer.fetchone()
+            db_connection.close()
+            return result
 
-        return result
     return False
 
 
