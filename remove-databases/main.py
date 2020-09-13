@@ -68,7 +68,7 @@ def database_filter_by_date(time_period):
 
 def database_filter(database):
     legitimate_list = get_legitimate_db_list(web_root)
-    old_databases = database_filter_by_date(7)
+    old_databases = database_filter_by_date("7")
 
     if database in legitimate_list:
         return False
