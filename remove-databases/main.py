@@ -2,10 +2,6 @@ import os
 import yaml
 import pymysql
 
-web_root = "/var/lib/docker/workspace/jade/html/OHRMStandalone"
-db_host = "172.70.0.102"
-db_user = "root"
-root_password = "1z5mMo@TxG7R"
 soft_deletion = False
 
 
@@ -35,7 +31,7 @@ def get_legitimate_db_list(webroot):
     return db_array
 
 
-def get_total_db_list(db_host, root_password):
+def get_total_db_list(db_host, root_password, db_user):
     db_connection = pymysql.connect(db_host, db_user, root_password)
     db_pointer = db_connection.cursor()
     db_pointer.execute("show databases")
@@ -44,7 +40,7 @@ def get_total_db_list(db_host, root_password):
     return result
 
 
-def database_filter_by_date(time_period):
+def database_filter_by_date(db_host, db_user, root_password, time_period):
     sql_query = "SELECT table_schema,MIN(create_time) create_time FROM information_schema.tables Group by " \
                 "TABLE_SCHEMA having create_time < DATE(NOW()) - INTERVAL " + time_period + " DAY Order by create_time " \
                                                                                             "desc;"
@@ -72,7 +68,7 @@ def database_filter(database, legitimate_list, old_databases):
     return True
 
 
-def delete_databases(db_name, db_host, root_password):
+def delete_databases(db_name, db_host, root_password, db_user):
     exclusion_list = ["information_schema", "mysql", "performance_schema"]
     if db_name not in exclusion_list:
 
@@ -90,13 +86,30 @@ def delete_databases(db_name, db_host, root_password):
 
 
 def main():
-    total_db_list = get_total_db_list(db_host, root_password)
-    legitimate_list = get_legitimate_db_list(web_root)
-    old_databases = database_filter_by_date("7")
-    for db in total_db_list:
-        db_name = db[0]
-        if database_filter(db_name, legitimate_list, old_databases):
-            delete_databases(db_name, db_host, root_password)
+    # read server registry and get the server list
+    is_exist = os.path.exists("server-registry.yml")
+    if not is_exist:
+        return False
+
+    try:
+        with open("server-registry.yml", "r") as server_registry:
+            uat_servers = yaml.load(server_registry, yaml.SafeLoader)
+        server_array = uat_servers['servers']
+        for server in server_array:
+            db_host = server['db_host']
+            root_password = server['root_password']
+            web_root = server['absolute_web_root']
+            db_user = server['db_user']
+            total_db_list = get_total_db_list(db_host, root_password, db_user)
+            legitimate_list = get_legitimate_db_list(web_root)
+            old_databases = database_filter_by_date(db_host, db_user, root_password, "7")
+            for db in total_db_list:
+                db_name = db[0]
+                if database_filter(db_name, legitimate_list, old_databases):
+                    delete_databases(db_name, db_host, root_password, db_user)
+    except yaml.YAMLError as error:
+        print(error)
+
     return True
 
 
