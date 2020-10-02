@@ -6,7 +6,7 @@ web_root = "/var/lib/docker/workspace/jade/html/OHRMStandalone"
 db_host = "172.70.0.102"
 db_user = "root"
 root_password = "1z5mMo@TxG7R"
-soft_deletion = True
+soft_deletion = False
 
 
 def get_legitimate_db_list(webroot):
@@ -16,7 +16,6 @@ def get_legitimate_db_list(webroot):
         return "Web root does not exist"
     for directory_first_level in os.listdir(webroot):
         secondary_web_root = webroot + '/' + directory_first_level
-        print(secondary_web_root)
         for directory in os.listdir(secondary_web_root):
             db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/config/databases.yml"
             if directory_first_level == "OPENSOURCE":
@@ -30,7 +29,6 @@ def get_legitimate_db_list(webroot):
                         literals = tmp.split(";")
                         db_name = literals[2].split("=")[1]
                         db_array.append(db_name)
-                        print(db_name)
                     except yaml.YAMLError as error:
                         print(error)
 
