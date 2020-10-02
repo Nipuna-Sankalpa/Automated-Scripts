@@ -16,6 +16,7 @@ def get_legitimate_db_list(webroot):
         return "Web root does not exist"
     for directory_first_level in os.listdir(webroot):
         secondary_web_root = webroot + '/' + directory_first_level
+        print(secondary_web_root)
         for directory in os.listdir(secondary_web_root):
             db_yml_path = webroot + '/' + directory_first_level + '/' + directory + "/symfony/config/databases.yml"
             if directory_first_level == "OPENSOURCE":
