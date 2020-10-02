@@ -30,6 +30,7 @@ def get_legitimate_db_list(webroot):
                         literals = tmp.split(";")
                         db_name = literals[2].split("=")[1]
                         db_array.append(db_name)
+                        print(db_name)
                     except yaml.YAMLError as error:
                         print(error)
 
