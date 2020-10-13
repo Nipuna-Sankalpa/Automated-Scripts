@@ -123,6 +123,39 @@ def send_status_email(valid_databases, failed_databases):
     return True
 
 
+def send_email(receiver_email, sftp_user_name, sftp_password, sftp_hostname,
+               sftp_port):
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "[SFTP Account][Client] SFTP Account for " + sftp_user_name.capitalize()
+    message["From"] = "ldapadmin@orangehrm.com"
+    message["To"] = receiver_email
+
+    # Create the plain-email_body and HTML version of your message
+    email_body = ""
+
+    email_body = email_body.replace('{{user_display_name}}', sftp_user_name.capitalize())
+    email_body = email_body.replace('{{user_name}}', sftp_user_name)
+    email_body = email_body.replace('{{password}}', sftp_password)
+    email_body = email_body.replace('{{hostname}}', sftp_hostname)
+    email_body = email_body.replace('{{port}}', sftp_port)
+    # Turn these into plain/html MIMEText objects
+    part1 = MIMEText(email_body, "html")
+
+    # Add HTML/plain-email_body parts to MIMEMultipart message
+    # The email client will try to render the last part first
+    message.attach(part1)
+    email_settings_object = get_email_settings()
+    # Create secure# e connection with server and send email
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP(email_settings_object['host'], email_settings_object['port']) as server:
+        server.starttls(context=context)  # Secure the connection
+        server.login(email_settings_object['user_name'], email_settings_object['password'])
+        server.sendmail(
+            "ldap-admin@orangehrm.com", receiver_email, message.as_string()
+        )
+
+
 def main():
     backup_locations = backup_workspace_preparation()
     databases = extract_valid_databases()
