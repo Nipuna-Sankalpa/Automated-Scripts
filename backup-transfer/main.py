@@ -28,12 +28,12 @@ def backup_workspace_preparation():
     return {'new_backup_location': new_backup_location}
 
 
-def check_integrity_file(file_path, type):
-    if type == "local":
+def check_integrity_file(file_path, backup_file_type):
+    if backup_file_type == "local":
         temp = subprocess.check_output("sha256sum " + file_path, shell=True)
         temp = temp.decode('utf-8')
         return temp.split(' ')[0]
-    elif type == "remote":
+    elif backup_file_type == "remote":
         temp_dictionary = {}
         with pysftp.Connection(host=sftp_host, username=user_name, password=password, port=sftp_port) as sftp:
             command = "cd " + file_path + " && ls | xargs sha256sum"
