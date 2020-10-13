@@ -14,6 +14,13 @@ rogue_backup_root_location = "/sabertooth/backups/"
 backup_suffix = ".sql.gz"
 
 
+def error_log(content):
+    pointer = open('error.log', 'a')
+    current_date = datetime.today().strftime('%Y-%m-%d')
+    pointer.write(current_date + " - " + content + "\n")
+    pointer.close()
+
+
 # this method will clean the old database backup and create workspace for the new backup
 def backup_workspace_preparation():
     today = datetime.today().strftime('%Y-%m-%d')
@@ -78,6 +85,7 @@ def upload_file(databases, backup_location):
             remote_db_path = backup_location['new_backup_location'] + "/" + db_record['db_name'] + backup_suffix
             sftp.put(local_db_path, remote_db_path)
             print("- Database Name: " + db_record['db_name'] + " -> Status : Uploaded")
+            error_log(db_record['db_name'] + " -> Status : Uploaded")
 
         sftp.close()
 
@@ -87,6 +95,7 @@ def backup_post_verification(databases, backup_locations):
     new_backup_location = backup_locations['new_backup_location']
     failed_dbs = []
     if len(valid_db_list) <= 0:
+        error_log("no valid databases available")
         return False
 
     with pysftp.Connection(host=sftp_host, username=user_name, password=password, port=sftp_port) as sftp:
@@ -101,6 +110,8 @@ def backup_post_verification(databases, backup_locations):
             else:
                 failed_dbs.append(db_name)
         sftp.close()
+    if len(failed_dbs) > 0:
+        error_log("Following databases have failed to upload " + failed_dbs)
     return failed_dbs
 
 
