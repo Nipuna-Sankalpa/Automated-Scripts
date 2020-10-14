@@ -23,7 +23,12 @@ SMTP_PORT = ""
 SMTP_USER_NAME = ""
 SMTP_PASSWORD = ""
 
+# Email notification settings
+NOTIFICATION_RECEIVER = "techops@orangehrm.com"
+NOTIFICATION_SENDER = "server-admin@orangehrm.com"
 
+
+# log all the errors
 def error_log(content):
     pointer = open('error.log', 'a')
     current_date = datetime.today().strftime('%Y-%m-%d')
@@ -45,6 +50,7 @@ def backup_workspace_preparation():
     return {'new_backup_location': new_backup_location}
 
 
+# this function will check for the hash values
 def check_integrity_file(file_path, backup_file_type):
     if backup_file_type == "local":
         temp = subprocess.check_output("sha256sum " + file_path, shell=True)
@@ -84,7 +90,7 @@ def extract_valid_databases():
     return result
 
 
-# this method will upload the databases to the new location
+# this method will upload the databases to the remote location location
 def upload_file(databases, backup_location):
     if len(databases['valid_databases']) <= 0:
         return False
@@ -99,6 +105,9 @@ def upload_file(databases, backup_location):
 
         sftp.close()
 
+
+# backup post verification
+# First check whether backup exists in the remote server. then will be checked for their hash values
 
 def backup_post_verification(databases, backup_locations):
     valid_db_list = databases['valid_databases']
@@ -125,31 +134,40 @@ def backup_post_verification(databases, backup_locations):
     return failed_dbs
 
 
-def send_status_email(valid_databases, failed_databases, receiver_email, sftp_user_name, sftp_password, sftp_hostname,
-                      sftp_port):
+# this function will send status email
+def send_status_email(valid_databases, failed_databases):
     registered_databases_count = len(valid_databases['valid_databases'])
     invalid_db_count = len(valid_databases['invalid_databases'])
     failed_upload_count = len(failed_databases)
     current_date = datetime.today().strftime('%Y-%m-%d')
 
     message = MIMEMultipart("alternative")
-    message["Subject"] = "[Production][Backup Transfer] Data Transfer Summary on " + current_date
-    message["From"] = "server-admin@orangehrm.com"
-    message["To"] = "techops@orangehrm.com"
+
+    if failed_upload_count > 0:
+        subject = "[Sabertooth][Backup Transfer][Fail] Data Transfer Summary on " + current_date
+    else:
+        subject = "[Sabertooth][Backup Transfer][Fail] Data Transfer Summary on " + current_date
+
+    message["Subject"] = subject
+    message["From"] = NOTIFICATION_SENDER
+    message["To"] = NOTIFICATION_RECEIVER
 
     # Create the plain-email_body and HTML version of your message
-    email_body = ""
+    file_pointer = open("email_template.html", "r")
+
+    email_body = file_pointer.read()
+    file_pointer.close()
 
     email_body = email_body.replace('#current_date#', current_date)
-    email_body = email_body.replace('#failed_db_count#', failed_upload_count)
-    email_body = email_body.replace('#invalid_db_count#', invalid_db_count)
-    email_body = email_body.replace('#registered_db_count#', registered_databases_count)
+    email_body = email_body.replace('#failed_db_count#', str(failed_upload_count))
+    email_body = email_body.replace('#invalid_db_count#', str(invalid_db_count))
+    email_body = email_body.replace('#registered_db_count#', str(registered_databases_count))
     # Turn these into plain/html MIMEText objects
-    part1 = MIMEText(email_body, "html")
+    part = MIMEText(email_body, "html")
 
     # Add HTML/plain-email_body parts to MIMEMultipart message
     # The email client will try to render the last part first
-    message.attach(part1)
+    message.attach(part)
     # Create secure# e connection with server and send email
     context = ssl.create_default_context()
 
@@ -157,19 +175,17 @@ def send_status_email(valid_databases, failed_databases, receiver_email, sftp_us
         server.starttls(context=context)  # Secure the connection
         server.login(SMTP_USER_NAME, SMTP_PASSWORD)
         server.sendmail(
-            message["From"], receiver_email, message.as_string()
+            message["From"], message["To"], message.as_string()
         )
 
 
+# this function will execute all the individual functions
 def main():
     backup_locations = backup_workspace_preparation()
     databases = extract_valid_databases()
     upload_file(databases, backup_locations)
     failed_databases = backup_post_verification(databases, backup_locations)
-    if not failed_databases:
-        send_status_email(databases, failed_databases)
-    else:
-        print("No valid database exists")
+    send_status_email(databases, failed_databases)
 
 
 main()
