@@ -2,6 +2,7 @@ This project is created to transfer backups from Sabertooth to Rogue
 Required packages
 pip3 install pysftp==0.2.8 (Dont install 0.2.9. it has a bug. which leads to login failure)
 pip3 install email
+pip3 install pyaml
 
 Rogue backup storing location - /sabertooth/backups
 Sabertooth backup location - /var/spool/holland/default/newest/backup_data
