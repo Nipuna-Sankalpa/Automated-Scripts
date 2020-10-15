@@ -146,7 +146,7 @@ def send_status_email(valid_databases, failed_databases):
     if failed_upload_count > 0:
         subject = "[Sabertooth][Backup Transfer][Fail] Data Transfer Summary on " + current_date
     else:
-        subject = "[Sabertooth][Backup Transfer][Fail] Data Transfer Summary on " + current_date
+        subject = "[Sabertooth][Backup Transfer][Success] Data Transfer Summary on " + current_date
 
     message["Subject"] = subject
     message["From"] = NOTIFICATION_SENDER
