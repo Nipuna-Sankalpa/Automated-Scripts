@@ -87,6 +87,7 @@ def extract_valid_databases():
                 result['valid_databases'].append(db)
             else:
                 result['invalid_databases'].append(database)
+                error_log(database + " -> Status : Invalid")
     return result
 
 
@@ -140,7 +141,7 @@ def send_status_email(valid_databases, failed_databases):
     invalid_db_count = len(valid_databases['invalid_databases'])
     failed_upload_count = len(failed_databases)
     current_date = datetime.today().strftime('%Y-%m-%d')
-    passed_db_count = registered_databases_count -(invalid_db_count + failed_upload_count)
+    passed_db_count = registered_databases_count - (invalid_db_count + failed_upload_count)
 
     message = MIMEMultipart("alternative")
 
