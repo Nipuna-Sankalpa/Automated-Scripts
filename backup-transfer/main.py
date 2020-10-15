@@ -14,7 +14,7 @@ user_name = "xxxx"
 password = "xxxxx"
 
 sabertooth_backup_location = "/var/spool/holland/default/newest/backup_data/"
-rogue_backup_root_location = "/sabertooth/backups/"
+rogue_backup_root_location = "/sabertooth/backups/data/"
 backup_suffix = ".sql.gz"
 
 # Email Settings
