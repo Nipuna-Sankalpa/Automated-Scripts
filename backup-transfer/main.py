@@ -140,6 +140,7 @@ def send_status_email(valid_databases, failed_databases):
     invalid_db_count = len(valid_databases['invalid_databases'])
     failed_upload_count = len(failed_databases)
     current_date = datetime.today().strftime('%Y-%m-%d')
+    passed_db_count = registered_databases_count -(invalid_db_count + failed_upload_count)
 
     message = MIMEMultipart("alternative")
 
@@ -162,6 +163,7 @@ def send_status_email(valid_databases, failed_databases):
     email_body = email_body.replace('#failed_db_count#', str(failed_upload_count))
     email_body = email_body.replace('#invalid_db_count#', str(invalid_db_count))
     email_body = email_body.replace('#registered_db_count#', str(registered_databases_count))
+    email_body = email_body.replace('#passed_db_count#', str(passed_db_count))
     # Turn these into plain/html MIMEText objects
     part = MIMEText(email_body, "html")
 
