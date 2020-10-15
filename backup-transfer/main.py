@@ -145,7 +145,7 @@ def send_status_email(valid_databases, failed_databases):
 
     message = MIMEMultipart("alternative")
 
-    if failed_upload_count > 0:
+    if failed_upload_count > 0 or invalid_db_count > 0:
         subject = "[Sabertooth][Backup Transfer][Fail] Data Transfer Summary on " + current_date
     else:
         subject = "[Sabertooth][Backup Transfer][Success] Data Transfer Summary on " + current_date
