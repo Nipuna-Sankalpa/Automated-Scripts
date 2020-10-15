@@ -137,7 +137,7 @@ def backup_post_verification(databases, backup_locations):
 
 # this function will send status email
 def send_status_email(valid_databases, failed_databases):
-    registered_databases_count = len(valid_databases['valid_databases'])
+    registered_databases_count = len(valid_databases['valid_databases']) + len(valid_databases['invalid_databases'])
     invalid_db_count = len(valid_databases['invalid_databases'])
     failed_upload_count = len(failed_databases)
     current_date = datetime.today().strftime('%Y-%m-%d')
