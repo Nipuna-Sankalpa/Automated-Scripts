@@ -120,10 +120,10 @@ def backup_post_verification(databases, backup_locations):
 
     with pysftp.Connection(host=sftp_host, username=user_name, password=password, port=sftp_port) as sftp:
         uploaded_list = sftp.listdir(new_backup_location)
+        remote_hash_values = check_integrity_file(new_backup_location, 'remote')
         for db_record in valid_db_list:
             db_name = db_record['db_name']
             full_backup_db_name = db_name + backup_suffix
-            remote_hash_values = check_integrity_file(new_backup_location, 'remote')
             if full_backup_db_name in uploaded_list and db_record['local_hash_value'] == remote_hash_values[
                 full_backup_db_name]:
                 continue
