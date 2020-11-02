@@ -7,7 +7,11 @@ pip3 install pyaml
 Rogue backup storing location - /sabertooth/backups
 Sabertooth backup location - /var/spool/holland/default/newest/backup_data
 
+Note : make sure that you add a forward slash at the end of the each backup location. otherwise it will lead to errors
 
 #server side SFTP account creation
 There will be dedicated sftp account to transfer backup from Sabertooth to Rogue
 That account is specifically created for backup transactions and chrooted to its home directory 
+
+FAQ - 
+when installing email module in python, if an error occurs like CSstringIO is missing, then just leave the module installation.
