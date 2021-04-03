@@ -1,0 +1,10 @@
+settings:
+  host: xxxx
+  port: yyy
+  remote-storage-server-username: xxx
+  remote-storage-server-password: yyy
+  #  data retention period is denoted by months
+  data-retention-period: 6
+  error-log-path: /var/log/elasticsearch-archive.log
+  elastic-dump-binary: /usr/local/bin/elasticdump
+  archive-directory: /var/spool/elasticdump
