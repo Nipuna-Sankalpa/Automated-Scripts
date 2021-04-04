@@ -44,9 +44,9 @@ def archiveIndex(index):
     binary_path = getConfigurations('elastic-dump-binary')
 
     dump_map = binary_path + " --fsCompress --delete --input=http://" + host + ":" + port + "/" + index + " --output=" + \
-               archive_log_path + index + "map.gzip --type=mapping"
+               archive_log_path + index + "map.gz --type=mapping"
     dump_data = binary_path + " --fsCompress --delete --input=http://" + host + ":" + port + "/" + index + " --output=" + \
-                archive_log_path + index + "data.gzip --type=data"
+                archive_log_path + index + "data.gz --type=data"
 
     try:
         result = os.system(dump_map + " && " + dump_data)
@@ -67,4 +67,4 @@ def pushRemoteCloud():
 logging.basicConfig(filename=getConfigurations('error-log-path'), format='%(asctime)s - %(message)s',
                     level=logging.INFO)
 
-print(getArchiveIndexList())
+archiveIndexList()
