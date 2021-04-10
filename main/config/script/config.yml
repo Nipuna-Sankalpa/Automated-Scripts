@@ -8,3 +8,4 @@ settings:
   error-log-path: /var/log/elasticsearch-archive.log
   elastic-dump-binary: /usr/local/bin/elasticdump
   archive-directory: /var/spool/elasticdump
+  soft-archive: true

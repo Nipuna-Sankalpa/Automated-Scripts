@@ -42,11 +42,18 @@ def archiveIndex(index):
     port = getConfigurations("port")
     archive_log_path = getConfigurations("archive-directory")
     binary_path = getConfigurations('elastic-dump-binary')
+    soft_archive_status = getConfigurations('soft-archive')
 
-    dump_map = binary_path + " --fsCompress --delete --input=http://" + host + ":" + port + "/" + index + " --output=" + \
-               archive_log_path + index + "map.gz --type=mapping"
-    dump_data = binary_path + " --fsCompress --delete --input=http://" + host + ":" + port + "/" + index + " --output=" + \
-                archive_log_path + index + "data.gz --type=data"
+    if soft_archive_status is True:
+        dump_map = binary_path + " --fsCompress --input=http://" + host + ":" + port + "/" + index + " --output=" + \
+                   archive_log_path + index + "map.gz --type=mapping"
+        dump_data = binary_path + " --fsCompress --input=http://" + host + ":" + port + "/" + index + " --output=" + \
+                    archive_log_path + index + "data.gz --type=data"
+    else:
+        dump_map = binary_path + " --fsCompress --delete --input=http://" + host + ":" + port + "/" + index + " --output=" + \
+                   archive_log_path + index + "map.gz --type=mapping"
+        dump_data = binary_path + " --fsCompress --delete --input=http://" + host + ":" + port + "/" + index + " --output=" + \
+                    archive_log_path + index + "data.gz --type=data"
 
     try:
         result = os.system(dump_map + " && " + dump_data)
