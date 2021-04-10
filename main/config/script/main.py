@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 def getConfigurations(index):
-    with open("config.yml", "r") as configuration_registry:
+    with open("config/script/config.yml", "r") as configuration_registry:
         configuration = yaml.load(configuration_registry, yaml.SafeLoader)
     if index in configuration['settings'].keys():
         return configuration['settings'][index]

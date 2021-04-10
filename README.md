@@ -3,6 +3,7 @@ Required packages
 pip3 install pysftp==0.2.8 (Dont install 0.2.9. it has a bug. which leads to login failure)
 pip3 install email
 pip3 install pyaml
+pip3 install elasticsearch
 
 Rogue backup storing location - /sabertooth/backups
 Sabertooth backup location - /var/spool/holland/default/newest/backup_data
