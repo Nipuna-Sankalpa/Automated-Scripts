@@ -23,7 +23,7 @@ def archiveIndexList():
     logs_delete_from = current_date - delta
     es = Elasticsearch([{'host': host, 'port': port}])
     index_list = es.cat.indices(index='logstash-*', format="JSON", h="index,creation.date.string")
-
+    result = ""
     for x in index_list:
         date_string = x['creation.date.string']
         date_object = datetime.strptime(date_string.split('T')[0], "%Y-%m-%d")
