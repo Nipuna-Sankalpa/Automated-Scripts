@@ -176,9 +176,10 @@ def verify():
 
 with open('config.json') as config_file:
     configuration = json.load(config_file)
+
     if configuration['reset_rules_infrastructure']:
         reset_reference_rules.reset_infrastructure_configurations()
-    elif configuration['reset_rules_synthetic']:
+    if configuration['reset_rules_synthetic']:
         reset_reference_rules.reset_synthetic_configurations()
-    elif configuration['rule_verification']:
+    if configuration['rule_verification']:
         verify()
