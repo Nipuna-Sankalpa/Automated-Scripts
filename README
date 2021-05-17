@@ -1,0 +1,7 @@
+# Pre requisites
+pip3 install requests
+
+#if you want to reset monitoring rules. just goto config.json and changed the required configuration from false to true. Then execute main.py
+- "reset_rules_infrastructure": This will reset the infrastructure rule set
+- "reset_rules_synthetic": This will reset the synthetic rule set
+- "rule_verification": This will enable the rule verification

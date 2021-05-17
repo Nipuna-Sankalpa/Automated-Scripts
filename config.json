@@ -1,0 +1,5 @@
+{
+  "reset_rules_infrastructure": false,
+  "reset_rules_synthetic": false,
+  "rule_verification": true
+}
